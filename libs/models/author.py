@@ -1,4 +1,4 @@
-
+from models.__init__ import CURSOR, CONN
 class Author:
     all = []
     def __init__(self, first_name, last_name, saved_madlibs):
@@ -38,11 +38,31 @@ class Author:
     
     @saved_madlibs.setter
     def saved_madlibs(self, madlibs):
-        if not isinstance(madlibs, list): #? type madlibs class or list?
+        if not isinstance(madlibs, str): #? type madlibs class or list?
             raise TypeError('Madlib must be a list')
         else:
             self._saved_madlibs = madlibs
             
-    # @classmethod
-    # def drop_table():
+    @classmethod
+    def create_table(cls):
+        
+        sql = """
+            CREATE TABLE IF NOT EXISTS authors (
+            id INTEGER PRIMARY KEY,
+            first_name TEXT,
+            last_name TEXT,
+            saved_madlibs TEXT)
+        """
+        
+        CURSOR.execute(sql)
+        CONN.commit()
 
+    @classmethod
+    def drop_table(cls):
+        
+        sql = """
+            DROP TABLE IF EXISTS authors;
+        """
+        
+        CURSOR.execute(sql)
+        CONN.commit()
