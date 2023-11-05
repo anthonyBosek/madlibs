@@ -5,3 +5,4 @@ class Author:
         self.last_name = last_name
         self.saved_madlibs = saved_madlibs
         type(self).all.append(self)
+    
