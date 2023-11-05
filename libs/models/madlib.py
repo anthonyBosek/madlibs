@@ -1,17 +1,16 @@
-# Anthony
 from models.__init__ import CURSOR, CONN
 
 
 class MadLib:
     all = {}
 
-    def __init__(self, author_words_list, author, template):
+    def __init__(self, author_words_list, author_id, template_id):
         self.author_words_list = author_words_list
-        self.author = author
-        self.template = template
+        self.author_id = author_id
+        self.template_id = template_id
 
     def __repr__(self):
-        return f"<MadLib {self.id}: {self.author_words_list}, {self.author}, {self.template}>"
+        return f"<MadLib {self.id}: {self.author_words_list}, {self.author_id}, {self.template_id}>"
 
     @property
     def author_words_list(self):
@@ -19,38 +18,32 @@ class MadLib:
 
     @author_words_list.setter
     def author_words_list(self, author_words_list):
-        if not isinstance(author_words_list, list):
+        if not isinstance(author_words_list, str):
             raise TypeError("author_words_list must be a list")
-        elif not all(isinstance(word, str) for word in author_words_list):
-            raise TypeError("author_words_list must be a list of strings")
         else:
             self._author_words_list = author_words_list
 
     @property
-    def author(self):
-        return self._author
+    def author_id(self):
+        return self._author_id
 
-    @author.setter
-    def author(self, author):
-        from models.author import Author
-
-        if not isinstance(author, Author):
+    @author_id.setter
+    def author_id(self, author_id):
+        if not isinstance(author_id, int) and not isinstance(author_id):
             raise TypeError("author must be an Author instance")
         else:
-            self._author = author
+            self._author_id = author_id
 
     @property
-    def template(self):
-        return self._template
+    def template_id(self):
+        return self._template_id
 
-    @template.setter
-    def template(self, template):
-        from models.template import Template
-
-        if not isinstance(template, Template):
+    @template_id.setter
+    def template_id(self, template_id):
+        if not isinstance(template_id, int) and not isinstance(template_id):
             raise TypeError("template must be a Template instance")
         else:
-            self._template = template
+            self._template_id = template_id
 
     @classmethod
     def create_table(cls):
@@ -58,9 +51,11 @@ class MadLib:
         sql = """
             CREATE TABLE IF NOT EXISTS madlibs (
             id INTEGER PRIMARY KEY,
-            author_words_list BLOB,
-            author FOREIGNKEY,
-            template FOREIGNKEY)
+            author_words_list TEXT,
+            author_id INTEGER,
+            template_id INTEGER,
+            FOREIGN KEY (author_id) REFERENCES authors(id),
+            FOREIGN KEY (template_id) REFERENCES templates(id))
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -77,18 +72,19 @@ class MadLib:
     def save(self):
         """Save a new MadLib to the database"""
         sql = """
-            INSERT INTO madlibs (author_words_list, author, template)
+            INSERT INTO madlibs (author_words_list, author_id, template_id)
             VALUES (?, ?, ?)
         """
-        CURSOR.execute(sql, (self.author_words_list, self.author, self.template))
+        CURSOR.execute(sql, (self.author_words_list, self.author_id, self.template_id))
         CONN.commit()
         self.id = CURSOR.lastrowid
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, author_words_list, author, template):
+    def create(cls, author_words_list, author_id, template_id):
         """Initialize a new MadLib instance and save the object to the database"""
-        madlib = cls(author_words_list, author, template)
+        author_words_list = ", ".join(author_words_list)  # convert list to string
+        madlib = cls(author_words_list, author_id, template_id)
         madlib.save()
         return madlib
 
@@ -96,11 +92,11 @@ class MadLib:
         """Update the table row corresponding to the current MadLib instance."""
         sql = """
             UPDATE madlibs
-            SET author_words_list = ?, author = ?, template = ?
+            SET author_words_list = ?, author_id = ?, template_id = ?
             WHERE id = ?
         """
         CURSOR.execute(
-            sql, (self.author_words_list, self.author, self.template, self.id)
+            sql, (self.author_words_list, self.author_id, self.template_id, self.id)
         )
         CONN.commit()
 
@@ -126,8 +122,8 @@ class MadLib:
         if madlib:
             # ensure attributes match row values in case local instance was modified
             madlib.author_word_list = row[1]
-            madlib.author = row[2]
-            madlib.template = row[3]
+            madlib.author_id = row[2]
+            madlib.template_id = row[3]
         else:
             # not in dictionary, create new instance and add to dictionary
             madlib = cls(row[1], row[2], row[3])
@@ -162,7 +158,7 @@ class MadLib:
         sql = """
             SELECT *
             FROM madlibs
-            WHERE author = ?
+            WHERE author_id = ?
         """
         row = CURSOR.execute(sql, (author_id,)).fetchone()
         return cls.instance_from_db(row) if row else None
@@ -173,7 +169,7 @@ class MadLib:
         sql = """
             SELECT *
             FROM madlibs
-            WHERE template = ?
+            WHERE template_id = ?
         """
         row = CURSOR.execute(sql, (template_id,)).fetchone()
         return cls.instance_from_db(row) if row else None

@@ -7,14 +7,7 @@ from models.template import Template
 
 
 def seed_database():
-    MadLib.drop_table()
-    MadLib.create_table()
-
-    author = Author("Alberto", "Vega", [])
-    template = Template(
-        "Adventure", "Climb a Moutain", "Test", ["verb", "noun", "adjective"]
-    )
-    MadLib.create(["run", "dog", "happy"], author, template)
+    pass
 
 
 seed_database()
