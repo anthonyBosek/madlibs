@@ -1,3 +1,4 @@
+
 class Author:
     all = []
     def __init__(self, first_name, last_name, saved_madlibs):
@@ -44,3 +45,4 @@ class Author:
             
     # @classmethod
     # def drop_table():
+
