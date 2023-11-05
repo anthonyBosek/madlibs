@@ -1,3 +1,4 @@
+
 from models.__init__ import CURSOR, CONN
 from models.madlib import MadLib
 
@@ -144,3 +145,4 @@ class Template:
 
         self.id = None       
     
+
