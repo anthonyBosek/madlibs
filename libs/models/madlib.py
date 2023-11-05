@@ -58,7 +58,7 @@ class MadLib:
         sql = """
             CREATE TABLE IF NOT EXISTS madlibs (
             id INTEGER PRIMARY KEY,
-            author_words_list LIST,
+            author_words_list BLOB,
             author FOREIGNKEY,
             template FOREIGNKEY)
         """
