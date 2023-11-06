@@ -1,0 +1,7 @@
+MadLibs
+
+Welcome to our interactive story creator!!
+
+Enter '-exit' to leave or '-help' for more options.
+
+Press enter to start...

@@ -15,6 +15,7 @@ def seed_database():
     # MadLib.create()
     Template.drop_table()
     Template.create_table()
+
     
     temp = Template.create("Adventure",
                     "The Quest for the Guardian",
@@ -143,6 +144,7 @@ def seed_database():
       
       
       
+
 
 
 seed_database()

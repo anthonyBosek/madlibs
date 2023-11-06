@@ -1,28 +1,66 @@
-from helpers import (
-    exit_program, list_madlibs, list_categorys
-)
+
+import subprocess
+from models import *
 
 
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            list_madlibs()
-        elif choice == "2":
-            list_categorys()
-        else:
-            print("Invalid choice")
+def welcome():
+    print(read_("./libs/txts/welcome.txt"))
+    choice = input("> ")
+    if choice == "-exit":
+        exit_program()
+    elif choice == "-help":
+        help_options()
+    else:
+        create_author()
 
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. List MadLibs")
-    print("2. List categories")
+def create_author():
+    subprocess.call("clear")
+    print("Enter your first name: ")
+    first_name = input("> ")
+    print("Enter your last name: ")
+    last_name = input("> ")
+    subprocess.call("clear")
+    print(f"Hello {first_name} {last_name}")
+    print()
+    select_category()
+
+
+def select_category():
+    print(read_("./libs/txts/categories.txt"))
+    category = input("> ")
+    subprocess.call("clear")
+    temp = ["adjective", "noun", "verb", "adverb"]
+    # temp = template.Template.select_random(category)
+    # randomly select template based on category
+    enter_words(temp)
+
+
+def enter_words(temp):
+    for word in temp:
+        # for word in temp.pos_list:
+        print(f"Enter a {word}: ")
+        word = input("> ")
+
+
+def create_madlib():
+    pass
+
+
+def help_options():
+    print(read_("./libs/txts/help.txt"))
+
+
+def exit_program():
+    print("Thanks for stopping in. Goodbye!")
+    exit()
+
+
+def read_(file):
+    with open(file, "r") as file:
+        return file.read()
+
 
 
 if __name__ == "__main__":
-    main()
+    welcome()
