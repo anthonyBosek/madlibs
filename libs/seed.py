@@ -13,7 +13,7 @@ def seed_database():
     MadLib.create_table()
     Template.drop_table()
     Template.create_table()
-    
+
 
 seed_database()
 print("Seeded database")
