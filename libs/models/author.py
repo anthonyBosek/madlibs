@@ -2,10 +2,6 @@ from models.__init__ import CURSOR, CONN
 class Author:
     all = []
     def __init__(self, first_name, last_name, saved_madlibs):
-        self._first_name = None
-        self._last_name = None
-        self._saved_madlibs = None
-        
         self.first_name = first_name
         self.last_name = last_name
         self.saved_madlibs = saved_madlibs
@@ -45,7 +41,6 @@ class Author:
             
     @classmethod
     def create_table(cls):
-        
         sql = """
             CREATE TABLE IF NOT EXISTS authors (
             id INTEGER PRIMARY KEY,
@@ -53,7 +48,6 @@ class Author:
             last_name TEXT,
             saved_madlibs TEXT)
         """
-        
         CURSOR.execute(sql)
         CONN.commit()
 
@@ -68,29 +62,30 @@ class Author:
         CONN.commit()
         
     @classmethod
-    def author_first_name(cls):
+    def create_author(cls):
         first_name = input("Enter your first name: ")
-        new_author_first = cls(first_name, [])
-        new_author_first.save()
-        return new_author_first
-    
-    @classmethod
-    def author_last_name(cls):
         last_name = input("Enter your last name: ")
-        new_author_last = cls(last_name, [])
-        new_author_last.save()  
-        return new_author_last
-        
+        new_author = cls(first_name, last_name, []) 
+        new_author.save(self)
+        return new_author
+    
+
     def save(self):
         CURSOR.execute("""
-                INSERT INTO authors(first_name, last_name)
-                VALUES(?, ?)
-        """, (self.first_name, self.last_name))
+                INSERT INTO authors(first_name, last_name, saved_madlibs)
+                VALUES(?, ?, ?)
+        """, (self.first_name, self.last_name,self.saved_madlibs))
         CONN.commit()
         self.id = CURSOR.lastrowid
     
     @classmethod
-    def select_template():
-        pass
+    def select_template(cls, template_id):
+        sql = """
+            SELECT template_id FROM templates WHERE id = ./template.py
+        """
+    CURSOR.execute(sql, (template_id,))
     
-print(author = Author('Alberto'))
+
+
+
+        

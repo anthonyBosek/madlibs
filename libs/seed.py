@@ -14,6 +14,9 @@ def seed_database():
     Template.drop_table()
     Template.create_table()
     
+new_author = Author.create_author(Author)
+create.Author.create_author(new_author)
+# new_author("Alberto","Sierra")
 
 seed_database()
 print("Seeded database")
