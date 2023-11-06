@@ -1,0 +1,6 @@
+template.py
+- random_template(cat) # randomly returns a template from the list by category
+
+list in db, how to handle this??
+
+colors, rich, plugins ??
