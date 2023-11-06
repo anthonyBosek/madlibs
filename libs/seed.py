@@ -90,6 +90,9 @@ def seed_database():
                     ]
                 )
     
+
+
+
     temp5 = Template.create("Sports",
                     "The Championship Match",
                     "Once upon a time, in the world of [0], the [1] from [2] were gearing up for the [3] championship match. The star player, [4], was known for their incredible [5] skills. The tension was high as the match began. Both teams gave their all, aiming to secure the victory. The crowd held its breath, eagerly watching the game. In the final moments, with the score tied at [6], [4] stepped up to the challenge. They used their remarkable [5] abilities to seize the moment and, with a powerful strike, brought their team to victory. The stadium erupted in [7] cheers as the team celebrated their [9]. The city celebrated this thrilling win for days, and [4] became a hero among sports fans. It was a moment of triumph, marking the team's place in history.", 
