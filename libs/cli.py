@@ -1,10 +1,13 @@
-
 import subprocess
 from models import *
+from rich import print
+from rich.console import Console
 
+
+console = Console()
 
 def welcome():
-    print(read_("./libs/txts/welcome.txt"))
+    console.print(read_("./libs/txts/welcome.txt"),style='magenta')
     choice = input("> ")
     if choice == "-exit":
         exit_program()
@@ -16,18 +19,18 @@ def welcome():
 
 def create_author():
     subprocess.call("clear")
-    print("Enter your first name: ")
+    console.print("Enter your first name: ",style='cyan underline bold')
     first_name = input("> ")
-    print("Enter your last name: ")
+    console.print("Enter your last name: ",style='cyan underline bold')
     last_name = input("> ")
     subprocess.call("clear")
-    print(f"Hello {first_name} {last_name}")
+    console.print(f"Hello {first_name} {last_name}",style='cyan underline bold')
     print()
     select_category()
 
 
 def select_category():
-    print(read_("./libs/txts/categories.txt"))
+    console.print(read_("./libs/txts/categories.txt"),style='yellow')
     category = input("> ")
     subprocess.call("clear")
     temp = ["adjective", "noun", "verb", "adverb"]
@@ -39,7 +42,7 @@ def select_category():
 def enter_words(temp):
     for word in temp:
         # for word in temp.pos_list:
-        print(f"Enter a {word}: ")
+        console.print(f"Enter a {word}: ",style='white')
         word = input("> ")
 
 
