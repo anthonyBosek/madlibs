@@ -74,11 +74,8 @@ class Template:
         else:
             self._pos_list = pos_list
 
-            
     def all_madlibs(self):
-        return [madlib for madlib in MadLib.all if madlib.template is self] 
-    
-    
+        return [madlib for madlib in MadLib.all if madlib.template is self]
 
     @classmethod
     def create_table(cls):
@@ -144,10 +141,8 @@ class Template:
         CONN.commit()
 
         del type(self).all[self.id]
-        self.id = None    
-        
-        
-    
+        self.id = None
+
     @classmethod
     def instance_from_db(cls, row):
         """Return a MadLib object having the attribute values from the table row."""
@@ -165,6 +160,7 @@ class Template:
             template.id = row[0]
             cls.all[template.id] = template
         return template
+
     @classmethod
     def get_all(cls):
         """Return a list containing a MadLib object per row in the table"""
@@ -174,16 +170,7 @@ class Template:
         """
         rows = CURSOR.execute(sql).fetchall()
         return [cls.instance_from_db(row) for row in rows]
-    
-    @classmethod
-    def get_all_categorys(cls, category):
-        """Return a list containing a MadLib object per row in the table"""
-        sql = """
-            SELECT DISTINCT category
-            FROM templates
-        """
-        row = CURSOR.execute(sql, (category)).fetchall()
-        return cls.instance_from_db(row) if row else None
+
     @classmethod
     def get_all_categorys(cls, category=None):
         categories = []
@@ -219,4 +206,3 @@ class Template:
             connection.close()
 
         return categories
-

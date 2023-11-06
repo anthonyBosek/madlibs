@@ -2,13 +2,13 @@ from models.__init__ import CURSOR, CONN
 from rich import print
 
 class Author:
-    all = []
-    def __init__(self, first_name, last_name, saved_madlibs):
+    all = {}
+
+    def __init__(self, first_name, last_name, saved_madlibs=[]):
         self.first_name = first_name
         self.last_name = last_name
         self.saved_madlibs = saved_madlibs
-        type(self).all.append(self)
-        
+
     @property
     def first_name(self):
         return self._first_name
@@ -36,8 +36,8 @@ class Author:
     
     @saved_madlibs.setter
     def saved_madlibs(self, madlibs):
-        if not isinstance(madlibs, str): 
-            raise TypeError('Madlib must be a list')
+        if not isinstance(madlibs, str):
+            raise TypeError("Madlib must be a list")
         else:
             self._saved_madlibs = madlibs
             
@@ -59,26 +59,27 @@ class Author:
         sql = """
             DROP TABLE IF EXISTS authors;
         """
-        
         CURSOR.execute(sql)
         CONN.commit()
-        
+
     @classmethod
-    def create_author(cls):
-        first_name = input("Enter your first name: ")
-        last_name = input("Enter your last name: ")
-        new_author = cls(first_name, last_name, []) 
-        new_author.save(self)
+    def create(cls, first_name, last_name, saved_madlibs=[]):
+        saved_madlibs = ", ".join(saved_madlibs)
+        new_author = cls(first_name, last_name, saved_madlibs)
+        new_author.save()
         return new_author
-    
 
     def save(self):
-        CURSOR.execute("""
+        CURSOR.execute(
+            """
                 INSERT INTO authors(first_name, last_name, saved_madlibs)
                 VALUES(?, ?, ?)
-        """, (self.first_name, self.last_name,self.saved_madlibs))
+            """,
+            (self.first_name, self.last_name, self.saved_madlibs),
+        )
         CONN.commit()
         self.id = CURSOR.lastrowid
+
     
     # @classmethod
     # def select_template(cls, template_id):
@@ -87,7 +88,3 @@ class Author:
     #     """
     # CURSOR.execute(sql, (template_id,))
     
-
-
-
-        
