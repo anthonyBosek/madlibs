@@ -6,3 +6,4 @@ from models.template import Template
 def exit_program():
     print("Goodbye!")
     exit()
+    

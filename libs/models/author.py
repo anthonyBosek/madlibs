@@ -38,7 +38,7 @@ class Author:
     
     @saved_madlibs.setter
     def saved_madlibs(self, madlibs):
-        if not isinstance(madlibs, str): #? type madlibs class or list?
+        if not isinstance(madlibs, str): 
             raise TypeError('Madlib must be a list')
         else:
             self._saved_madlibs = madlibs
@@ -66,3 +66,31 @@ class Author:
         
         CURSOR.execute(sql)
         CONN.commit()
+        
+    @classmethod
+    def author_first_name(cls):
+        first_name = input("Enter your first name: ")
+        new_author_first = cls(first_name, [])
+        new_author_first.save()
+        return new_author_first
+    
+    @classmethod
+    def author_last_name(cls):
+        last_name = input("Enter your last name: ")
+        new_author_last = cls(last_name, [])
+        new_author_last.save()  
+        return new_author_last
+        
+    def save(self):
+        CURSOR.execute("""
+                INSERT INTO authors(first_name, last_name)
+                VALUES(?, ?)
+        """, (self.first_name, self.last_name))
+        CONN.commit()
+        self.id = CURSOR.lastrowid
+    
+    @classmethod
+    def select_template():
+        pass
+    
+print(author = Author('Alberto'))
