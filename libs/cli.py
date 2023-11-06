@@ -1,10 +1,14 @@
 import subprocess
 from models import *
+from rich import print
+from rich.console import Console
 
+
+console = Console()
 
 def welcome():
     subprocess.call("clear")
-    print(read_("./libs/txts/welcome.txt"))
+    console.print(read_("./libs/txts/welcome.txt"),style='magenta')
     choice = input("> ")
     if choice == "-exit":
         exit_program()
@@ -16,20 +20,19 @@ def welcome():
 
 def create_author():
     subprocess.call("clear")
-    print("Enter your first name: ")
+    console.print("Enter your first name: ",style='cyan underline bold')
     first_name = input("> ")
-    print("Enter your last name: ")
+    console.print("Enter your last name: ",style='cyan underline bold')
     last_name = input("> ")
     subprocess.call("clear")
-    print(f"Hello {first_name} {last_name}")
+    console.print(f"Hello {first_name} {last_name}",style='cyan underline bold')
     print()
     new_auth = author.Author.create(first_name, last_name)
     select_category()
 
 
 def select_category():
-    # subprocess.call("clear")
-    print(read_("./libs/txts/categories.txt"))
+    console.print(read_("./libs/txts/categories.txt"),style='yellow')
     all_cats = template.Template.get_all_categorys()
     i = 1
     for cat in all_cats:
@@ -47,7 +50,7 @@ def enter_words(cat, temp=["noun", "verb", "adjective"]):
 
     for word in temp:
         # for word in temp.pos_list:
-        print(f"Enter a {word}: ")
+        console.print(f"Enter a {word}: ",style='white')
         word = input("> ")
 
 
@@ -71,3 +74,14 @@ def read_(file):
 
 if __name__ == "__main__":
     welcome()
+
+
+# test =  "__  __           _ _      _ _         
+#         |  \/  |         | | |    (_) |        
+#         | \  / | __ _  __| | |     _| |__  ___ 
+#         | |\/| |/ _` |/ _` | |    | | '_ \/ __|
+#         | |  | | (_| | (_| | |____| | |_) \__ \
+#         |_|  |_|\__,_|\__,_|______|_|_.__/|___/
+#         "
+    
+    

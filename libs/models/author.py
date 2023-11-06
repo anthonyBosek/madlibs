@@ -1,5 +1,5 @@
 from models.__init__ import CURSOR, CONN
-
+from rich import print
 
 class Author:
     all = {}
@@ -12,40 +12,35 @@ class Author:
     @property
     def first_name(self):
         return self._first_name
-
+    
     @first_name.setter
-    def first_name(self, first_name):
-        if not isinstance(first_name, str) or not 1 <= len(first_name) <= 15:
-            raise TypeError(
-                "First name must be a string between 1 and 15 characters long."
-            )
-        else:
+    def first_name(self,first_name):
+        if not isinstance (first_name, str) or not 1<=len(first_name)<=15:
+            raise TypeError('First name must be a string between 1 and 15 characters long.')
+        else: 
             self._first_name = first_name
-
     @property
     def last_name(self):
         return self._last_name
-
+    
     @last_name.setter
-    def last_name(self, last_name):
-        if not isinstance(last_name, str) or not 1 <= len(last_name) <= 15:
-            raise TypeError(
-                "Last name must be a string between 1 and 15 characters long."
-            )
-        else:
+    def last_name(self,last_name):
+        if not isinstance (last_name, str) or not 1<=len(last_name)<=15:
+            raise TypeError('Last name must be a string between 1 and 15 characters long.')
+        else: 
             self._last_name = last_name
-
+            
     @property
     def saved_madlibs(self):
         return self._saved_madlibs
-
+    
     @saved_madlibs.setter
     def saved_madlibs(self, madlibs):
         if not isinstance(madlibs, str):
             raise TypeError("Madlib must be a list")
         else:
             self._saved_madlibs = madlibs
-
+            
     @classmethod
     def create_table(cls):
         sql = """
@@ -60,6 +55,7 @@ class Author:
 
     @classmethod
     def drop_table(cls):
+        
         sql = """
             DROP TABLE IF EXISTS authors;
         """
@@ -84,9 +80,11 @@ class Author:
         CONN.commit()
         self.id = CURSOR.lastrowid
 
-    @classmethod
-    def select_template(cls, template_id):
-        sql = """
-            SELECT template_id FROM templates WHERE id = ./template.py
-        """
-        CURSOR.execute(sql, (template_id,))
+    
+    # @classmethod
+    # def select_template(cls, template_id):
+    #     sql = """
+    #         SELECT template_id FROM templates WHERE id = ./template.py
+    #     """
+    # CURSOR.execute(sql, (template_id,))
+    
