@@ -1,4 +1,5 @@
 from models.__init__ import CURSOR, CONN
+
 class Author:
     all = []
     def __init__(self, first_name, last_name, saved_madlibs):
@@ -66,3 +67,4 @@ class Author:
         
         CURSOR.execute(sql)
         CONN.commit()
+
