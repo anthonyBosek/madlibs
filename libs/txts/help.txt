@@ -1,0 +1,4 @@
+some help info here
+help
+exit
+...
