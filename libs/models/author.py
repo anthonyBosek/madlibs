@@ -72,3 +72,4 @@ class Author:
 
         CURSOR.execute(sql)
         CONN.commit()
+

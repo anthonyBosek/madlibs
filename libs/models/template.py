@@ -1,5 +1,6 @@
 from models.__init__ import CURSOR, CONN
 from models.madlib import MadLib
+import sqlite3
 
 
 class Template:
@@ -73,8 +74,11 @@ class Template:
         else:
             self._pos_list = pos_list
 
-    def madlibs(self):
-        return [madlib for madlib in MadLib.all if madlib.template is self]
+            
+    def all_madlibs(self):
+        return [madlib for madlib in MadLib.all if madlib.template is self] 
+    
+    
 
     @classmethod
     def create_table(cls):
@@ -140,5 +144,79 @@ class Template:
         CONN.commit()
 
         del type(self).all[self.id]
+        self.id = None    
+        
+        
+    
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a MadLib object having the attribute values from the table row."""
+        # Check the dictionary for an existing instance using the row's primary key
+        template = cls.all.get(row[0])
+        if template:
+            # ensure attributes match row values in case local instance was modified
+            template.category = row[1]
+            template.title = row[2]
+            template.text = row[3]
+            template.pos_list = row[4]
+        else:
+            # not in dictionary, create new instance and add to dictionary
+            template = cls(row[1], row[2], row[3], row[4])
+            template.id = row[0]
+            cls.all[template.id] = template
+        return template
+    @classmethod
+    def get_all(cls):
+        """Return a list containing a MadLib object per row in the table"""
+        sql = """
+            SELECT *
+            FROM templates
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+    
+    @classmethod
+    def get_all_categorys(cls, category):
+        """Return a list containing a MadLib object per row in the table"""
+        sql = """
+            SELECT DISTINCT category
+            FROM templates
+        """
+        row = CURSOR.execute(sql, (category)).fetchall()
+        return cls.instance_from_db(row) if row else None
+    @classmethod
+    def get_all_categorys(cls, category=None):
+        categories = []
 
-        self.id = None
+        # Define the SQL query to select distinct categories
+        sql = """
+            SELECT DISTINCT category
+            FROM templates
+        """
+
+        if category is not None:
+            # If a specific category is provided, filter the query
+            sql += " WHERE category = ?"
+
+        # Connect to the database and execute the query
+        connection = sqlite3.connect("AAAMadLibs.db")  # Replace with your database name
+        try:
+            cursor = connection.cursor()
+            if category is not None:
+                cursor.execute(sql, (category,))
+            else:
+                cursor.execute(sql)
+
+            rows = cursor.fetchall()
+
+            # Extract categories from the results
+            for row in rows:
+                categories.append(row[0])
+
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+        finally:
+            connection.close()
+
+        return categories
+
