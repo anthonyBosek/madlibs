@@ -1,3 +1,4 @@
+import re 
 import subprocess
 from models import *
 from rich import print
@@ -66,11 +67,14 @@ def enter_words(category):
 
 
 def create_madlib(madlib):
-    subprocess.call("clear")
     print(madlib)
-    print(current_author)
     print(current_template)
-
+    # new_madlib = current_template[4] 
+    new_madlib = current_template[3]
+    # regex=r"\[\d{,2}\]"
+    author_words = madlib.author_words_list.split(",")
+    story = re.sub(r"\[\d{,2}\]", lambda x:author_words[int(x.group()[1])], new_madlib)
+    print(story)
 
 def help_options():
     print(read_("./libs/txts/help.txt"))
@@ -90,10 +94,3 @@ if __name__ == "__main__":
     welcome()
 
 
-# test =  "__  __           _ _      _ _
-#         |  \/  |         | | |    (_) |
-#         | \  / | __ _  __| | |     _| |__  ___
-#         | |\/| |/ _` |/ _` | |    | | '_ \/ __|
-#         | |  | | (_| | (_| | |____| | |_) \__ \
-#         |_|  |_|\__,_|\__,_|______|_|_.__/|___/
-#         "
