@@ -5,10 +5,13 @@ from rich.console import Console
 
 
 console = Console()
+current_author = None
+current_template = None
+
 
 def welcome():
     subprocess.call("clear")
-    console.print(read_("./libs/txts/welcome.txt"),style='magenta')
+    console.print(read_("./libs/txts/welcome.txt"), style="magenta")
     choice = input("> ")
     if choice == "-exit":
         exit_program()
@@ -19,20 +22,21 @@ def welcome():
 
 
 def create_author():
+    global current_author
     subprocess.call("clear")
-    console.print("Enter your first name: ",style='cyan underline bold')
+    console.print("Enter your first name: ", style="cyan underline bold")
     first_name = input("> ")
-    console.print("Enter your last name: ",style='cyan underline bold')
+    console.print("Enter your last name: ", style="cyan underline bold")
     last_name = input("> ")
     subprocess.call("clear")
-    console.print(f"Hello {first_name} {last_name}",style='cyan underline bold')
+    console.print(f"Hello {first_name} {last_name}", style="cyan underline bold")
     print()
-    new_auth = author.Author.create(first_name, last_name)
+    current_author = author.Author.create(first_name, last_name)
     select_category()
 
 
 def select_category():
-    console.print(read_("./libs/txts/categories.txt"),style='yellow')
+    console.print(read_("./libs/txts/categories.txt"), style="yellow")
     all_cats = template.Template.get_all_categorys()
     i = 1
     for cat in all_cats:
@@ -44,18 +48,28 @@ def select_category():
     # enter_words(template.Template.random_template(all_cats[int(category) - 1]))
 
 
-def enter_words(cat, temp):
+def enter_words(category):
+    global current_template
     subprocess.call("clear")
-    print(cat)
-    temp = template.Template.get_random_template_by_category()
-    for word in temp:
-        # for word in temp.pos_list:
-        console.print(f"Enter a {word}: ",style='white')
+    print(category)
+    temp = template.Template.get_random_template_by_category(template, category)
+    current_template = temp
+    author_words = []
+    author_id = current_author.id
+    temp_id = temp[0]
+    for word in temp[4].split(","):
+        console.print(f"Enter a {word}: ", style="white")
         word = input("> ")
+        author_words.append(word)
+    new_madlib = madlib.MadLib.create(author_words, author_id, temp_id)
+    create_madlib(new_madlib)
 
 
-def create_madlib():
-    pass
+def create_madlib(madlib):
+    subprocess.call("clear")
+    print(madlib)
+    print(current_author)
+    print(current_template)
 
 
 def help_options():
@@ -76,12 +90,10 @@ if __name__ == "__main__":
     welcome()
 
 
-# test =  "__  __           _ _      _ _         
-#         |  \/  |         | | |    (_) |        
-#         | \  / | __ _  __| | |     _| |__  ___ 
+# test =  "__  __           _ _      _ _
+#         |  \/  |         | | |    (_) |
+#         | \  / | __ _  __| | |     _| |__  ___
 #         | |\/| |/ _` |/ _` | |    | | '_ \/ __|
 #         | |  | | (_| | (_| | |____| | |_) \__ \
 #         |_|  |_|\__,_|\__,_|______|_|_.__/|___/
 #         "
-    
-    
