@@ -1,6 +1,7 @@
 from models.__init__ import CURSOR, CONN
 from models.madlib import MadLib
 import sqlite3
+import random
 
 
 class Template:
@@ -63,7 +64,7 @@ class Template:
 
     @pos_list.setter
     def pos_list(self, pos_list):
-        if not isinstance(pos_list, str):
+        if not isinstance(pos_list, list):
             raise TypeError("Part of speech list must be of type list.")
         elif not len(pos_list) >= 1:
             raise TypeError("Part of speech list must be more than 1 character.")
@@ -206,3 +207,104 @@ class Template:
             connection.close()
 
         return categories
+    # ----------  GETS THE RANDOMS TEMPLATE BY CATEGORY  -------
+    def get_random_template_by_category(cls, category):
+        
+        connection = sqlite3.connect("AAAMadLibs.db") 
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM templates WHERE category = ?", (category,))
+            templates = cursor.fetchall()
+
+            if templates:
+
+                random_template = random.choice(templates)
+                return random_template
+            else:
+                print(f"No templates found in the '{category}' category.")
+                return None
+
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return None
+
+        finally:
+            connection.close()
+         
+         
+     # ----------  GETS THE RANDOMS TEMPLATE TITLE  -------   
+    def get_random_template_by_category_title(cls, category):
+
+        connection = sqlite3.connect("AAAMadLibs.db") 
+
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM templates WHERE category = ?", (category,))
+            templates = cursor.fetchall()
+
+            if templates:
+                random_template = random.choice(templates)
+                return random_template[2]
+            else:
+                print(f"No templates found in the '{category}' category.")
+                return None
+
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return None
+
+        finally:
+            connection.close()
+            
+            
+            
+    # ----------  GETS THE RANDOMS TEMPLATE TEXT -------     
+    def get_random_template_by_category_text(cls, category):
+
+        connection = sqlite3.connect("AAAMadLibs.db")
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM templates WHERE category = ?", (category,))
+            templates = cursor.fetchall()
+
+            if templates:
+                
+                random_template = random.choice(templates)
+                return random_template[3]
+            else:
+                print(f"No templates found in the '{category}' category.")
+                return None
+
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return None
+
+        finally:
+            connection.close()
+            
+            
+    # ----------  GETS THE RANDOMS TEMPLATE PARTS OF SPEECH  -------   
+    def get_random_template_by_category_pos_list(cls, category):
+        
+        connection = sqlite3.connect("AAAMadLibs.db")  
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM templates WHERE category = ?", (category,))
+            templates = cursor.fetchall()
+
+            if templates:
+            
+                 random_template = random.choice(templates)
+                 pos_list = random_template[4].split(", ")
+                 return pos_list
+            else:
+                print(f"No templates found in the '{category}' category.")
+                return None
+
+        except sqlite3.Error as e:
+            print(f"Error: {e}")
+            return None
+
+        finally:
+            connection.close()
