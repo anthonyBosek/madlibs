@@ -1,4 +1,4 @@
-        __   __           _ _      _ _         
+         __  __           _ _      _ _         
         |  \/  |         | | |    (_) |        
         | \  / | __ _  __| | |     _| |__  ___ 
         | |\/| |/ _` |/ _` | |    | | '_ \/ __|
@@ -11,4 +11,4 @@ Welcome to our interactive story creator!!
 
 Enter '-exit' to leave or '-help' for more options.
 
-Press enter to start...
+Enter '-start' to begin...
