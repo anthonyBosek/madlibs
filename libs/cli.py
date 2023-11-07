@@ -44,10 +44,10 @@ def select_category():
     # enter_words(template.Template.random_template(all_cats[int(category) - 1]))
 
 
-def enter_words(cat, temp=["noun", "verb", "adjective"]):
+def enter_words(cat, temp):
     subprocess.call("clear")
     print(cat)
-
+    temp = template.Template.get_random_template_by_category()
     for word in temp:
         # for word in temp.pos_list:
         console.print(f"Enter a {word}: ",style='white')
