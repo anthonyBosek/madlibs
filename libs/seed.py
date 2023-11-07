@@ -107,7 +107,8 @@ def seed_database():
             "action verb",
             "number",
             "emotion",
-            "piece of sports equipment" "a result",
+            "piece of sports equipment",
+            "a result",
         ],
     )
 
