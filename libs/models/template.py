@@ -64,7 +64,7 @@ class Template:
 
     @pos_list.setter
     def pos_list(self, pos_list):
-        if not isinstance(pos_list, list):
+        if not isinstance(pos_list, str):
             raise TypeError("Part of speech list must be of type list.")
         elif not len(pos_list) >= 1:
             raise TypeError("Part of speech list must be more than 1 character.")
