@@ -115,9 +115,13 @@ def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
     story = re.sub(
-        r"\[\d{,2}\]", lambda x: author_words[int(x.group()[1])].strip(), new_madlib
+        r"\[\d{,2}\]", lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]", new_madlib
     )
-    print(story)
+    console.print(story)
+  
+
+    
+   
 
 
 def help_options():
