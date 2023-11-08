@@ -100,17 +100,29 @@ def enter_words(category):
     author_words = []
     author_id = current_author.id
     temp_id = temp[0]
+    is_vowel = re.search("^[aeiou]", word.strip(), re.IGNORECASE)
     for word in temp[4].split(","):
-        console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
+        if is_vowel:
+            console.print(f"Enter an [cyan]{word.strip()}[/cyan]: ")
+        else:
+            console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
         author_word = input("> ").strip()
         while not author_word:
             subprocess.call("clear")
             print("please enter a word")
-            console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
+            if is_vowel:
+                console.print(f"Enter an [cyan]{word.strip()}[/cyan]: ")
+            else:
+                console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
             author_word = input("> ").strip()
         author_words.append(author_word)
     new_madlib = madlib.MadLib.create(author_words, author_id, temp_id)
     create_madlib(new_madlib)
+    for word in temp[4].split(","):
+        if re.search("^[aeiou]", word.strip(), re.IGNORECASE):
+            print("Enter an", word.strip(), ":")
+        else:
+            print("Enter a", word.strip(), ":")
 
 
 def create_madlib(madlib):
