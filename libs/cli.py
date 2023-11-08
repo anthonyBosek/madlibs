@@ -103,6 +103,7 @@ def enter_words(category):
     for word in temp[4].split(","):
         console.print(f"Enter a [cyan]{word}[/cyan]: ")
         author_word = input("> ").strip()
+        subprocess.call("clear")
         while not author_word:
             subprocess.call("clear")
             print("please enter a word")
