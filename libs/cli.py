@@ -12,7 +12,7 @@ current_template = None
 
 def welcome():
     subprocess.call("clear")
-    console.print(read_("./libs/txts/welcome.txt"), style="magenta")
+    console.print(read_("./libs/txts/welcome.txt"), style="magenta b")
     choice = input("> ").lower()
     if choice == "-exit":
         exit_program()
@@ -61,11 +61,11 @@ def create_author():
 
 def select_category():
     while True:
-        console.print(read_("./libs/txts/categories.txt"), style="yellow")
+        console.print(read_("./libs/txts/categories.txt"), style="yellow b")
         all_cats = template.Template.get_all_categorys()
         i = 1
         for cat in all_cats:
-            print(f"{i}. {cat}")
+            console.print(f"{i}. {cat}", style='yellow')
             i += 1
         console.print(template.Template.most_used_template(), style="blue bold")
         console.print("Select a category by number:", style="cyan underline bold")
@@ -117,23 +117,33 @@ def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
     name = current_author.first_name + " " + current_author.last_name
-    new_madlib = re.sub(r"\[Author\]", name, new_madlib)
+    new_madlib = re.sub(r"\[Author\]",name, new_madlib)
     story = re.sub(
-        r"\[\d{,2}\]",
-        lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]",
-        new_madlib,
+        r"\[\d{,2}\]", lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]", new_madlib
     )
-    console.print("Here's your new MadLib!", style="cyan underline bold")
-    console.print(current_template[2], style="magenta")
-    console.print(story)
+    console.print("Here's your new MadLib!", style='yellow b')
+    console.print(f"{current_template[2]}",style='green b underline')
+    console.print(f"{story}",style="white")
+    console.print(f"Created by:{current_author.first_name + ' ' + current_author.last_name}",style="cyan")
+    new_game()
+    
+        
+def new_game():
+    console.print("Enter '-new' to play again!")  
+    choice = input("").lower()
+    if choice == "-new":
+        select_category()
 
 
 def help_options():
-    print(read_("./libs/txts/help.txt"))
+    console.print(read_("./libs/txts/help.txt"),style="white b")
+    choice = input("").lower()
+    if choice == "-start":
+        create_author()
 
 
 def exit_program():
-    print("Thanks for stopping in. Goodbye!")
+    console.print("Thanks for stopping in. Goodbye!", style='magenta')
     exit()
 
 

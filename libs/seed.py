@@ -147,6 +147,7 @@ def seed_database():
             "Verb (past tense)",
         ],
     )
+    
 
     # seed madlibs
     ml1 = MadLib.create(
