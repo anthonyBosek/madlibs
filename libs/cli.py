@@ -112,11 +112,12 @@ def create_madlib(madlib):
     name = current_author.first_name + " " + current_author.last_name
     new_madlib = re.sub(r"\[Author\]", name, new_madlib)
     story = re.sub(
-        r"\[\d+\]", lambda x: author_words[int(x.group()[1])].strip(), new_madlib
+        r"\[\d{,2}\]", lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]", new_madlib
     )
     print("Here's your new MadLib!")
     print(current_template[2])
-    print(story)
+    console.print(story)
+
 
 def help_options():
     print(read_("./libs/txts/help.txt"))
