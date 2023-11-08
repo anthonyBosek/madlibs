@@ -1,10 +1,9 @@
-import re
 import subprocess
 from models import *
 from rich import print
 from rich.console import Console
 import time
-
+import re
 
 console = Console()
 current_author = None
@@ -14,7 +13,7 @@ current_template = None
 def welcome():
     subprocess.call("clear")
     console.print(read_("./libs/txts/welcome.txt"), style="magenta")
-    choice = input("> ").lower()
+    choice = input("").lower()
     if choice == "-exit":
         exit_program()
     elif choice == "-help":
@@ -22,11 +21,11 @@ def welcome():
     elif choice == "-start":
         create_author()
     else:
-        print("Invalid choice. Please enter '-exit', '-help', or '-start'.")
-        time.sleep(2.5)
-        welcome()
-
-
+         print("Invalid choice. Please enter '-exit', '-help', or '-start'.")
+         time.sleep(2.5)
+         welcome()
+         
+     
 def create_author():
     global current_author
     subprocess.call("clear")
@@ -58,21 +57,33 @@ def create_author():
     print()
     current_author = author.Author.create(first_name, last_name)
     select_category()
-
-
+    
+    
 def select_category():
-    console.print(read_("./libs/txts/categories.txt"), style="yellow")
-    all_cats = template.Template.get_all_categorys()
-    i = 1
-    for cat in all_cats:
-        print(f"{i}. {cat}")
-        i += 1
-    category = input("> ").strip()
-    while not category == category:
-        console.print("Please select a category by number!")
-        category = input("> ").strip()
-    cat = all_cats[int(category) - 1]
-    enter_words(cat)
+    while True:
+        console.print(read_("./libs/txts/categories.txt"), style="yellow")
+        all_cats = template.Template.get_all_categorys()
+        i = 1
+        for cat in all_cats:
+            print(f"{i}. {cat}")
+            i += 1
+        
+        category = input("> ").strip()        
+        try:
+            category_index = int(category)
+            if 1 <= category_index <= len(all_cats):
+                cat = all_cats[category_index - 1]
+                enter_words(cat)
+                break  # Exit the loop when a valid category is selected
+            else:
+                subprocess.call("clear")
+                console.print("Invalid category number. Please select a valid category by number.")
+        except ValueError:
+            subprocess.call("clear")
+            console.print("Please select a category by entering its number.")
+        except IndexError:
+            subprocess.call("clear")
+            console.print("Invalid category number. Please select a valid category by number.")
 
 
 def enter_words(category):
@@ -85,13 +96,12 @@ def enter_words(category):
     author_id = current_author.id
     temp_id = temp[0]
     for word in temp[4].split(","):
-        if re.search("^[aeiou]", word.strip(), re.IGNORECASE):
-            print("Enter an", word.strip(), ":")
-        else:
-            print("Enter a", word.strip(), ":")
-        # console.print(f"Enter a {word.strip()}: ", style="white")
-        word = input("> ")
-        author_words.append(word)
+        console.print(f"Enter a {word}: ", style="white")
+        author_word = input("> ").strip()
+        while not author_word:
+            console.print(f"Enter a {word}: ", style="white")
+            author_word = input("> ").strip()
+        author_words.append(author_word)
     new_madlib = madlib.MadLib.create(author_words, author_id, temp_id)
     create_madlib(new_madlib)
 
@@ -104,14 +114,12 @@ def create_madlib(madlib):
     story = re.sub(
         r"\[\d+\]", lambda x: author_words[int(x.group()[1])].strip(), new_madlib
     )
+    print("Here's your new MadLib!")
+    print(current_template[2])
     print(story)
 
-
 def help_options():
-    subprocess.call("clear")
     print(read_("./libs/txts/help.txt"))
-    input("Press enter to continue...")
-    welcome()
 
 
 def exit_program():
@@ -126,3 +134,5 @@ def read_(file):
 
 if __name__ == "__main__":
     welcome()
+
+

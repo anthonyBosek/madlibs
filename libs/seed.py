@@ -45,6 +45,7 @@ def seed_database():
         "Day in the Life",
         "Once upon a time in a far-off land, there lived a(n) [1] [2] named [Your Name]. One sunny morning, they woke up and [3] out of bed. The clock on the wall struck [4], and the room was bathed in a soft, [5] light.[Your Name] had a pet [6] named [6's Name], who eagerly awaited breakfast. [Your Name] fed [6's Name] a delicious meal of [7], and the [6] happily wagged its tail. Feeling [8], [Your Name] decided to go for a walk with [6's Name]. They strolled [9] through the [10], enjoying the fresh air and the beauty of nature. Suddenly, they spotted a colorful [5] butterfly fluttering by. [Your Name] reached out and touched it, feeling a sense of wonder. After the walk, they returned home and noticed a tiny scratch on their [11]. It must have happened during the adventure with the butterfly. [Your Name] decided to put on their favorite band's [12] and spent the rest of the day relaxing, feeling content and thankful for the little moments that made their life special.",
         [
+            "",
             "Adjective",
             "Noun",
             "Verb past tense",
