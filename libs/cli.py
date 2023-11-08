@@ -13,7 +13,7 @@ current_template = None
 def welcome():
     subprocess.call("clear")
     console.print(read_("./libs/txts/welcome.txt"), style="magenta b")
-    choice = input("").lower()
+    choice = input("> ").lower()
     if choice == "-exit":
         exit_program()
     elif choice == "-help":
@@ -57,8 +57,8 @@ def create_author():
     print()
     current_author = author.Author.create(first_name, last_name)
     select_category()
-    
-    
+
+
 def select_category():
     while True:
         console.print(read_("./libs/txts/categories.txt"), style="yellow b")
@@ -67,8 +67,9 @@ def select_category():
         for cat in all_cats:
             console.print(f"{i}. {cat}", style='yellow')
             i += 1
-        
-        category = input("> ").strip()        
+        console.print(template.Template.most_used_template(), style="blue bold")
+        console.print("Select a category by number:", style="cyan underline bold")
+        category = input("> ").strip()
         try:
             category_index = int(category)
             if 1 <= category_index <= len(all_cats):
@@ -77,13 +78,17 @@ def select_category():
                 break  # Exit the loop when a valid category is selected
             else:
                 subprocess.call("clear")
-                console.print("Invalid category number. Please select a valid category by number.")
+                console.print(
+                    "Invalid category number. Please select a valid category by number."
+                )
         except ValueError:
             subprocess.call("clear")
             console.print("Please select a category by entering its number.")
         except IndexError:
             subprocess.call("clear")
-            console.print("Invalid category number. Please select a valid category by number.")
+            console.print(
+                "Invalid category number. Please select a valid category by number."
+            )
 
 
 def enter_words(category):
