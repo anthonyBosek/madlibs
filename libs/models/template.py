@@ -14,10 +14,10 @@ class Template:
         self.pos_list = pos_list
 
     @property
-    def catagorty(self):
+    def category(self):
         return self._category
 
-    @catagorty.setter
+    @category.setter
     def category(self, category):
         if not isinstance(category, str):
             raise TypeError("Category must be of type string.")
@@ -76,7 +76,12 @@ class Template:
             self._pos_list = pos_list
 
     def all_madlibs(self):
-        return [madlib for madlib in MadLib.all if madlib.template is self]
+        # for id, madlib in MadLib.all.items():
+        #     print(madlib.template_id)
+        return [
+            madlib for id, madlib in MadLib.all.items() if madlib.template_id is self.id
+        ]
+        # return [madlib for madlib in MadLib.all if madlib[3] is self.id]
 
     @classmethod
     def create_table(cls):
@@ -298,3 +303,20 @@ class Template:
 
         finally:
             connection.close()
+
+    def authors(self):
+        return [madlib.author_id for madlib in self.all_madlibs()]
+
+    # most used template by number of authors
+    @classmethod
+    def most_used_template(cls):
+        sql = """
+            SELECT templates.category, templates.title, COUNT(madlibs.author_id) AS count
+            FROM templates
+            JOIN madlibs ON templates.id = madlibs.template_id
+            GROUP BY templates.title
+            ORDER BY count DESC
+            LIMIT 1
+        """
+        row = CURSOR.execute(sql).fetchone()
+        return f"{row[1].title()} is the most used template with {row[2]} authors. It is available in the {row[0].title()} category."
