@@ -101,10 +101,12 @@ def enter_words(category):
     author_id = current_author.id
     temp_id = temp[0]
     for word in temp[4].split(","):
-        console.print(f"Enter a {word}: ", style="white")
+        console.print(f"Enter a [cyan]{word}[/cyan]: ")
         author_word = input("> ").strip()
         while not author_word:
-            console.print(f"Enter a {word}: ", style="white")
+            subprocess.call("clear")
+            print("please enter a word")
+            console.print(f"Enter a [cyan]{word}[/cyan]: ")
             author_word = input("> ").strip()
         author_words.append(author_word)
     new_madlib = madlib.MadLib.create(author_words, author_id, temp_id)
@@ -121,8 +123,8 @@ def create_madlib(madlib):
         lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]",
         new_madlib,
     )
-    print("Here's your new MadLib!")
-    print(current_template[2])
+    console.print("Here's your new MadLib!", style="cyan underline bold")
+    console.print(current_template[2], style="magenta")
     console.print(story)
 
 
