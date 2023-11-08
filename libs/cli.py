@@ -65,7 +65,7 @@ def select_category():
         all_cats = template.Template.get_all_categorys()
         i = 1
         for cat in all_cats:
-            console.print(f"{i}. {cat}", style='yellow')
+            console.print(f"{i}. {cat}", style="yellow")
             i += 1
         console.print(template.Template.most_used_template(), style="blue bold")
         console.print("Select a category by number:", style="cyan underline bold")
@@ -101,12 +101,12 @@ def enter_words(category):
     author_id = current_author.id
     temp_id = temp[0]
     for word in temp[4].split(","):
-        console.print(f"Enter a [cyan]{word}[/cyan]: ")
+        console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
         author_word = input("> ").strip()
         while not author_word:
             subprocess.call("clear")
             print("please enter a word")
-            console.print(f"Enter a [cyan]{word}[/cyan]: ")
+            console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
             author_word = input("> ").strip()
         author_words.append(author_word)
     new_madlib = madlib.MadLib.create(author_words, author_id, temp_id)
@@ -117,33 +117,40 @@ def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
     name = current_author.first_name + " " + current_author.last_name
-    new_madlib = re.sub(r"\[Author\]",name, new_madlib)
+    new_madlib = re.sub(r"\[Author\]", name, new_madlib)
     story = re.sub(
-        r"\[\d{,2}\]", lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]", new_madlib
+        r"\[\d{,2}\]",
+        lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]",
+        new_madlib,
     )
-    console.print("Here's your new MadLib!", style='yellow b')
-    console.print(f"{current_template[2]}",style='green b underline')
-    console.print(f"{story}",style="white")
-    console.print(f"Created by:{current_author.first_name + ' ' + current_author.last_name}",style="cyan")
+    console.print("Here's your new MadLib!", style="yellow b")
+    console.print(f"{current_template[2]}", style="green b underline")
+    console.print(f"{story}", style="white")
+    console.print(
+        f"Created by:{current_author.first_name + ' ' + current_author.last_name}",
+        style="cyan",
+    )
     new_game()
-    
-        
+
+
 def new_game():
-    console.print("Enter '-new' to play again!")  
+    console.print("Enter '-new' to play again!")
     choice = input("").lower()
     if choice == "-new":
         select_category()
+    elif choice == "-exit":
+        exit_program()
 
 
 def help_options():
-    console.print(read_("./libs/txts/help.txt"),style="white b")
+    console.print(read_("./libs/txts/help.txt"), style="white b")
     choice = input("").lower()
     if choice == "-start":
         create_author()
 
 
 def exit_program():
-    console.print("Thanks for stopping in. Goodbye!", style='magenta')
+    console.print("Thanks for stopping in. Goodbye!", style="magenta")
     exit()
 
 
