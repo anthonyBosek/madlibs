@@ -107,6 +107,7 @@ def enter_words(category):
         else:
             console.print(f"Enter a [cyan]{word.strip()}[/cyan]: ")
         author_word = input("> ").strip()
+        subprocess.call("clear")
         while not author_word:
             subprocess.call("clear")
             print("please enter a word")
@@ -126,7 +127,7 @@ def create_madlib(madlib):
     name = current_author.first_name + " " + current_author.last_name
     new_madlib = re.sub(r"\[Author\]", f"[yellow b]{name}[/yellow b]", new_madlib)
     story = re.sub(
-        r"\[\d{,2}\]",
+        r"\[\d+\]",
         lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]",
         new_madlib,
     )
@@ -151,6 +152,7 @@ def new_game():
 
 
 def help_options():
+    subprocess.call("clear")
     console.print(read_("./libs/txts/help.txt"), style="white b")
     choice = input("").lower()
     if choice == "-start":
