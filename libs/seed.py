@@ -92,7 +92,7 @@ def seed_database():
             "number",
             "emotion",
             "peice of sports equipment",
-            "a result",
+            "result",
         ],
     )
     t5 = Template.create(
@@ -147,7 +147,6 @@ def seed_database():
             "Verb (past tense)",
         ],
     )
-    
 
     # seed madlibs
     ml1 = MadLib.create(
