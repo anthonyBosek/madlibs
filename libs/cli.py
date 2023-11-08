@@ -26,21 +26,6 @@ def welcome():
          welcome()
          
      
-
-
-# def create_author():
-#     global current_author
-#     subprocess.call("clear")
-#     console.print("Enter your first name: ", style="cyan underline bold")
-#     first_name = input("> ").strip()
-#     console.print("Enter your last name: ", style="cyan underline bold")
-#     last_name = input("> ").strip()
-#     subprocess.call("clear")
-#     console.print(f"Hello {first_name} {last_name}", style="cyan underline bold")
-#     print()
-#     current_author = author.Author.create(first_name, last_name)
-#     select_category()
-
 def create_author():
     global current_author
     subprocess.call("clear")
@@ -72,24 +57,7 @@ def create_author():
     print()
     current_author = author.Author.create(first_name, last_name)
     select_category()
-
-
-
-# def select_category():
-#     console.print(read_("./libs/txts/categories.txt"), style="yellow")
-#     all_cats = template.Template.get_all_categorys()
-#     i = 1
-#     for cat in all_cats:
-#         print(f"{i}. {cat}")
-#         i += 1
-#     category = input("> ").strip()
-#     while not category:
-#         console.print("Please select a category by number!")
-#         category = input("> ").strip()
-#     cat = all_cats[int(category) - 1]
-#     enter_words(cat)
     
-    # enter_words(template.Template.random_template(all_cats[int(category) - 1]))
     
 def select_category():
     while True:
@@ -100,8 +68,7 @@ def select_category():
             print(f"{i}. {cat}")
             i += 1
         
-        category = input("> ").strip()
-        
+        category = input("> ").strip()        
         try:
             category_index = int(category)
             if 1 <= category_index <= len(all_cats):
@@ -117,16 +84,6 @@ def select_category():
         except IndexError:
             subprocess.call("clear")
             console.print("Invalid category number. Please select a valid category by number.")
-
-# # Call the select_category function to choose a category
-# select_category()
-
-
-
-
-
-
-
 
 
 def enter_words(category):
@@ -150,14 +107,13 @@ def enter_words(category):
 
 
 def create_madlib(madlib):
-    # print(madlib)
-    # print(current_template)
-
-    # new_madlib = current_template[4] 
     new_madlib = current_template[3]
-    # regex=r"\[\d{,2}\]"
     author_words = madlib.author_words_list.split(",")
-    story = re.sub(r"\[\d{,2}\]", lambda x:author_words[int(x.group()[1])], new_madlib)
+    name = current_author.first_name + " " + current_author.last_name
+    new_madlib = re.sub(r"\[Author\]", name, new_madlib)
+    story = re.sub(
+        r"\[\d+\]", lambda x: author_words[int(x.group()[1])].strip(), new_madlib
+    )
     print("Here's your new MadLib!")
     print(current_template[2])
     print(story)
