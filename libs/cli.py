@@ -100,8 +100,8 @@ def enter_words(category):
     author_words = []
     author_id = current_author.id
     temp_id = temp[0]
-    is_vowel = re.search("^[aeiou]", word.strip(), re.IGNORECASE)
     for word in temp[4].split(","):
+        is_vowel = re.search("^[aeiou]", word.strip(), re.IGNORECASE)
         if is_vowel:
             console.print(f"Enter an [cyan]{word.strip()}[/cyan]: ")
         else:
@@ -118,18 +118,13 @@ def enter_words(category):
         author_words.append(author_word)
     new_madlib = madlib.MadLib.create(author_words, author_id, temp_id)
     create_madlib(new_madlib)
-    for word in temp[4].split(","):
-        if re.search("^[aeiou]", word.strip(), re.IGNORECASE):
-            print("Enter an", word.strip(), ":")
-        else:
-            print("Enter a", word.strip(), ":")
 
 
 def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
     name = current_author.first_name + " " + current_author.last_name
-    new_madlib = re.sub(r"\[Author\]", name, new_madlib)
+    new_madlib = re.sub(r"\[Author\]", f"[yellow b]{name}[/yellow b]", new_madlib)
     story = re.sub(
         r"\[\d{,2}\]",
         lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]",
@@ -149,6 +144,7 @@ def new_game():
     console.print("Enter '-new' to play again!")
     choice = input("").lower()
     if choice == "-new":
+        subprocess.call("clear")
         select_category()
     elif choice == "-exit":
         exit_program()
