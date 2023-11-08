@@ -148,23 +148,6 @@ def seed_database():
         ],
     )
     
-    Template.create(
-    "Avatar",
-    "The Elemental Journey",
-    "In a world divided into four nations, a young [0] named [1] discovered their extraordinary ability to [2]. With the guidance of a wise [3], [1] embarked on a quest to master the art of [2]. Along the way, they encountered a [4] [5] who became their loyal companion. Together, they traveled through the [6] landscapes of the [7] Nation, facing challenges and meeting intriguing characters. As they honed their skills, [1] also learned about the ancient prophecy of the [8] and their role in restoring balance to the world. With determination in their heart and the power of [2] at their fingertips, [1] faced the formidable [9], an evil force threatening to plunge the world into chaos. With the support of newfound friends and the wisdom of their mentor, [1] confronted the darkness and emerged victorious, proving that even the most unexpected heroes can change the course of destiny and bring peace to a war-torn world.",
-    [
-        "bender type (e.g., waterbender, earthbender, firebender, airbender)",
-        "character name",
-        "bend an element (e.g., bend water, bend fire)",
-        "element (e.g., water, earth, fire, air)",
-        "mythical creature (e.g., dragon, spirit)",
-        "creature's name",
-        "geographical feature (e.g., mountains, forests, deserts)",
-        "elemental nation (e.g., Water Tribe, Earth Kingdom, Fire Nation, Air Nomads)",
-        "ancient artifact",
-        "villain's name",
-    ],
-)
 
     # seed madlibs
     MadLib.create(

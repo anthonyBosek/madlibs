@@ -24,7 +24,7 @@ class Template:
         elif not len(category) > 1:
             raise TypeError("Category must be more than 1 character.")
         elif hasattr(self, "category"):
-            raise ArithmeticError("Category cannont be changed after initialization")
+            raise ArithmeticError("Category cannot be changed after initialization")
         else:
             self._category = category
 
@@ -39,7 +39,7 @@ class Template:
         elif not len(title) > 1:
             raise TypeError("Title must be more than 1 character.")
         elif hasattr(self, "title"):
-            raise ArithmeticError("Title cannont be changed after initialization")
+            raise ArithmeticError("Title cannot be changed after initialization")
         else:
             self._title = title
 
@@ -54,7 +54,7 @@ class Template:
         elif not len(text) > 10:
             raise TypeError("Text must be more than 10 character.")
         elif hasattr(self, "text"):
-            raise ArithmeticError("Text cannont be changed after initialization")
+            raise ArithmeticError("Text cannot be changed after initialization")
         else:
             self._text = text
 
@@ -70,7 +70,7 @@ class Template:
             raise TypeError("Part of speech list must be more than 1 character.")
         elif hasattr(self, "pos_list"):
             raise ArithmeticError(
-                "Part of speech list cannont be changed after initialization"
+                "Part of speech list cannot be changed after initialization"
             )
         else:
             self._pos_list = pos_list

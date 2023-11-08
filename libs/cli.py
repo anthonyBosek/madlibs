@@ -117,6 +117,17 @@ def create_madlib(madlib):
     console.print("Here's your new MadLib!", style='yellow b')
     console.print(f"{current_template[2]}",style='green b underline')
     console.print(f"{story}",style="white")
+    console.print(f"Created by:{current_author.first_name + ' ' + current_author.last_name}",style="cyan")
+    new_game()
+    
+        
+def new_game():
+    console.print("Enter '-new' to play again!")
+    
+    choice = input("").lower()
+    if choice == "-new":
+        select_category()
+    
     
     # author name color
 
