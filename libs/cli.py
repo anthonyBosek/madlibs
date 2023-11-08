@@ -27,20 +27,6 @@ def welcome():
         welcome()
 
 
-# def create_author():
-#     global current_author
-#     subprocess.call("clear")
-#     console.print("Enter your first name: ", style="cyan underline bold")
-#     first_name = input("> ").strip()
-#     console.print("Enter your last name: ", style="cyan underline bold")
-#     last_name = input("> ").strip()
-#     subprocess.call("clear")
-#     console.print(f"Hello {first_name} {last_name}", style="cyan underline bold")
-#     print()
-#     current_author = author.Author.create(first_name, last_name)
-#     select_category()
-
-
 def create_author():
     global current_author
     subprocess.call("clear")
@@ -87,7 +73,6 @@ def select_category():
         category = input("> ").strip()
     cat = all_cats[int(category) - 1]
     enter_words(cat)
-    # enter_words(template.Template.random_template(all_cats[int(category) - 1]))
 
 
 def enter_words(category):
@@ -114,8 +99,10 @@ def enter_words(category):
 def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
+    name = current_author.first_name + " " + current_author.last_name
+    new_madlib = re.sub(r"\[Author\]", name, new_madlib)
     story = re.sub(
-        r"\[\d{,2}\]", lambda x: author_words[int(x.group()[1])].strip(), new_madlib
+        r"\[\d+\]", lambda x: author_words[int(x.group()[1])].strip(), new_madlib
     )
     print(story)
 
