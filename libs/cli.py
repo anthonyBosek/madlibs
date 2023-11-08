@@ -12,7 +12,7 @@ current_template = None
 
 def welcome():
     subprocess.call("clear")
-    console.print(read_("./libs/txts/welcome.txt"), style="magenta")
+    console.print(read_("./libs/txts/welcome.txt"), style="magenta b")
     choice = input("").lower()
     if choice == "-exit":
         exit_program()
@@ -21,11 +21,11 @@ def welcome():
     elif choice == "-start":
         create_author()
     else:
-         print("Invalid choice. Please enter '-exit', '-help', or '-start'.")
-         time.sleep(2.5)
-         welcome()
-         
-     
+        print("Invalid choice. Please enter '-exit', '-help', or '-start'.")
+        time.sleep(2.5)
+        welcome()
+
+
 def create_author():
     global current_author
     subprocess.call("clear")
@@ -61,11 +61,11 @@ def create_author():
     
 def select_category():
     while True:
-        console.print(read_("./libs/txts/categories.txt"), style="yellow")
+        console.print(read_("./libs/txts/categories.txt"), style="yellow b")
         all_cats = template.Template.get_all_categorys()
         i = 1
         for cat in all_cats:
-            print(f"{i}. {cat}")
+            console.print(f"{i}. {cat}", style='yellow')
             i += 1
         
         category = input("> ").strip()        
@@ -110,21 +110,26 @@ def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
     name = current_author.first_name + " " + current_author.last_name
-    new_madlib = re.sub(r"\[Author\]", name, new_madlib)
+    new_madlib = re.sub(r"\[Author\]",name, new_madlib)
     story = re.sub(
-        r"\[\d{,2}\]", lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]", new_madlib
+        r"\[\d{,2}\]", lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]", new_madlib
     )
-    print("Here's your new MadLib!")
-    print(current_template[2])
-    console.print(story)
+    console.print("Here's your new MadLib!", style='yellow b')
+    console.print(f"{current_template[2]}",style='green b underline')
+    console.print(f"{story}",style="white")
+    
+    # author name color
 
 
 def help_options():
-    print(read_("./libs/txts/help.txt"))
+    console.print(read_("./libs/txts/help.txt"),style="white b")
+    choice = input("").lower()
+    if choice == "-start":
+        create_author()
 
 
 def exit_program():
-    print("Thanks for stopping in. Goodbye!")
+    console.print("Thanks for stopping in. Goodbye!", style='magenta')
     exit()
 
 
@@ -135,5 +140,3 @@ def read_(file):
 
 if __name__ == "__main__":
     welcome()
-
-
