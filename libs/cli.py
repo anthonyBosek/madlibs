@@ -13,7 +13,7 @@ current_template = None
 def welcome():
     subprocess.call("clear")
     console.print(read_("./libs/txts/welcome.txt"), style="magenta")
-    choice = input("").lower()
+    choice = input("> ").lower()
     if choice == "-exit":
         exit_program()
     elif choice == "-help":
@@ -21,11 +21,11 @@ def welcome():
     elif choice == "-start":
         create_author()
     else:
-         print("Invalid choice. Please enter '-exit', '-help', or '-start'.")
-         time.sleep(2.5)
-         welcome()
-         
-     
+        print("Invalid choice. Please enter '-exit', '-help', or '-start'.")
+        time.sleep(2.5)
+        welcome()
+
+
 def create_author():
     global current_author
     subprocess.call("clear")
@@ -57,8 +57,8 @@ def create_author():
     print()
     current_author = author.Author.create(first_name, last_name)
     select_category()
-    
-    
+
+
 def select_category():
     while True:
         console.print(read_("./libs/txts/categories.txt"), style="yellow")
@@ -67,8 +67,9 @@ def select_category():
         for cat in all_cats:
             print(f"{i}. {cat}")
             i += 1
-        
-        category = input("> ").strip()        
+        console.print(template.Template.most_used_template(), style="blue bold")
+        console.print("Select a category by number:", style="cyan underline bold")
+        category = input("> ").strip()
         try:
             category_index = int(category)
             if 1 <= category_index <= len(all_cats):
@@ -77,13 +78,17 @@ def select_category():
                 break  # Exit the loop when a valid category is selected
             else:
                 subprocess.call("clear")
-                console.print("Invalid category number. Please select a valid category by number.")
+                console.print(
+                    "Invalid category number. Please select a valid category by number."
+                )
         except ValueError:
             subprocess.call("clear")
             console.print("Please select a category by entering its number.")
         except IndexError:
             subprocess.call("clear")
-            console.print("Invalid category number. Please select a valid category by number.")
+            console.print(
+                "Invalid category number. Please select a valid category by number."
+            )
 
 
 def enter_words(category):
@@ -112,7 +117,9 @@ def create_madlib(madlib):
     name = current_author.first_name + " " + current_author.last_name
     new_madlib = re.sub(r"\[Author\]", name, new_madlib)
     story = re.sub(
-        r"\[\d{,2}\]", lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]", new_madlib
+        r"\[\d{,2}\]",
+        lambda x: f"[cyan]{author_words[int(x.group()[1])].strip()}[/cyan]",
+        new_madlib,
     )
     print("Here's your new MadLib!")
     print(current_template[2])
@@ -135,5 +142,3 @@ def read_(file):
 
 if __name__ == "__main__":
     welcome()
-
-
