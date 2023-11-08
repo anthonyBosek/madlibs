@@ -1,4 +1,9 @@
 some help info here
-help
-exit
+
+-help : help menu
+
+-exit : exit the program
+
+-start : start the program
+
 ...
