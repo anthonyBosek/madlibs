@@ -207,10 +207,10 @@ class Template:
             connection.close()
 
         return categories
+
     # ----------  GETS THE RANDOMS TEMPLATE BY CATEGORY  -------
     def get_random_template_by_category(cls, category):
-        
-        connection = sqlite3.connect("AAAMadLibs.db") 
+        connection = sqlite3.connect("AAAMadLibs.db")
 
         try:
             cursor = connection.cursor()
@@ -218,7 +218,6 @@ class Template:
             templates = cursor.fetchall()
 
             if templates:
-
                 random_template = random.choice(templates)
                 return random_template
             else:
@@ -231,12 +230,10 @@ class Template:
 
         finally:
             connection.close()
-         
-         
-     # ----------  GETS THE RANDOMS TEMPLATE TITLE  -------   
-    def get_random_template_by_category_title(cls, category):
 
-        connection = sqlite3.connect("AAAMadLibs.db") 
+    # ----------  GETS THE RANDOMS TEMPLATE TITLE  -------
+    def get_random_template_by_category_title(cls, category):
+        connection = sqlite3.connect("AAAMadLibs.db")
 
         try:
             cursor = connection.cursor()
@@ -256,12 +253,9 @@ class Template:
 
         finally:
             connection.close()
-            
-            
-            
-    # ----------  GETS THE RANDOMS TEMPLATE TEXT -------     
-    def get_random_template_by_category_text(cls, category):
 
+    # ----------  GETS THE RANDOMS TEMPLATE TEXT -------
+    def get_random_template_by_category_text(cls, category):
         connection = sqlite3.connect("AAAMadLibs.db")
         try:
             cursor = connection.cursor()
@@ -269,7 +263,6 @@ class Template:
             templates = cursor.fetchall()
 
             if templates:
-                
                 random_template = random.choice(templates)
                 return random_template[3]
             else:
@@ -282,22 +275,19 @@ class Template:
 
         finally:
             connection.close()
-            
-            
-    # ----------  GETS THE RANDOMS TEMPLATE PARTS OF SPEECH  -------   
+
+    # ----------  GETS THE RANDOMS TEMPLATE PARTS OF SPEECH  -------
     def get_random_template_by_category_pos_list(cls, category):
-        
-        connection = sqlite3.connect("AAAMadLibs.db")  
+        connection = sqlite3.connect("AAAMadLibs.db")
         try:
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM templates WHERE category = ?", (category,))
             templates = cursor.fetchall()
 
             if templates:
-            
-                 random_template = random.choice(templates)
-                 pos_list = random_template[4].split(", ")
-                 return pos_list
+                random_template = random.choice(templates)
+                pos_list = random_template[4].split(", ")
+                return pos_list
             else:
                 print(f"No templates found in the '{category}' category.")
                 return None
