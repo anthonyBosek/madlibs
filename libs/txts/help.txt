@@ -13,3 +13,9 @@ Commands:
 -exit: exit the program
 
 -start: start the program
+
+-back: return to options menu
+
+-new: create a new story
+
+Author can delete account in options menu.
