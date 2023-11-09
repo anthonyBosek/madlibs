@@ -26,6 +26,11 @@ AAA MadLibs is a python command line application were the user and add their inf
 - The user can then view their saved madlibs and have the ablitiy to delete them.
 - The user has the ability to remove their information from the data base.
 
+## Future features
+
+- implement `nltk` for parts of speech validation
+- a random word generater for random madlib creattion
+
 ## License
 
 - This project is is made in conjunction with the standard `MIT` license provided by `GitHub` upon creation of a new repository. A copy of the license is included with this project in a file named: `LICENSE`.
