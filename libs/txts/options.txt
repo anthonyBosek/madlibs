@@ -1,0 +1,4 @@
+
+1. View one of your madlibs
+2. Create a new madlib
+3. Delete your profile

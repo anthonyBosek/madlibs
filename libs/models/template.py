@@ -321,3 +321,17 @@ class Template:
         row = CURSOR.execute(sql).fetchone()
         return f"*{row[0].title()} has the most popular template - '{row[1].title()}'."
         # return f"{row[1].title()} is the most used template with {row[2]} authors. It is available in the {row[0].title()} category."
+
+    # class method to grab template by id
+    @classmethod
+    def get_template_by_id(cls, id):
+        sql = """
+            SELECT * FROM templates
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (id,))
+        row = CURSOR.fetchone()
+        if row:
+            return row
+        else:
+            return None

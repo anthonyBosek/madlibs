@@ -1,4 +1,6 @@
 from models.__init__ import CURSOR, CONN
+
+
 class Author:
     all = {}
 
@@ -68,3 +70,58 @@ class Author:
         CONN.commit()
         self.id = CURSOR.lastrowid
         Author.all[self.id] = self
+
+    # class method to verify if author exists
+    @classmethod
+    def author_exists(cls, first_name, last_name):
+        sql = """
+            SELECT * FROM authors
+            WHERE first_name = ? AND last_name = ?
+        """
+        CURSOR.execute(sql, (first_name, last_name))
+        row = CURSOR.fetchone()
+        if row:
+            return True
+        else:
+            return False
+
+    # class method to grab author by first and last name
+    @classmethod
+    def get_author_by_name(cls, first_name, last_name):
+        sql = """
+            SELECT * FROM authors
+            WHERE first_name = ? AND last_name = ?
+        """
+        CURSOR.execute(sql, (first_name, last_name))
+        row = CURSOR.fetchone()
+        if row:
+            return row
+        else:
+            return None
+
+    # class method to delete author by id
+    @classmethod
+    def delete_author_by_id(cls, id):
+        sql = """
+            DELETE FROM authors
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (id,))
+        CONN.commit()
+        # del cls.all[id]
+
+    # class method to randomly grab a completed madlib by author id
+    @classmethod
+    def get_random_madlib(cls, id):
+        sql = """
+            SELECT * FROM madlibs
+            WHERE author_id = ?
+            ORDER BY RANDOM()
+            LIMIT 1
+        """
+        CURSOR.execute(sql, (id,))
+        row = CURSOR.fetchone()
+        if row:
+            return row
+        else:
+            return None

@@ -52,10 +52,13 @@ def create_author():
         last_name = input("> ").strip()
 
     subprocess.call("clear")
-    console.print(f"Hello {first_name} {last_name}", style="cyan bold")
-    print()
-    current_author = author.Author.create(first_name, last_name)
-    select_category()
+    if author.Author.author_exists(first_name, last_name):
+        welcome_back(first_name, last_name)
+    else:
+        console.print(f"Hello {first_name} {last_name}", style="cyan bold")
+        print()
+        current_author = author.Author.create(first_name, last_name)
+        select_category()
 
 
 def select_category():
@@ -101,7 +104,9 @@ def enter_words(category):
     temp = template.Template.get_random_template_by_category(template, category)
     current_template = temp
     author_words = []
-    author_id = current_author.id
+    author_id = (
+        current_author.id if type(current_author) != tuple else current_author[0]
+    )
     temp_id = temp[0]
     for word in temp[4].split(","):
         is_vowel = re.search("^[aeiou]", word.strip(), re.IGNORECASE)
@@ -125,16 +130,7 @@ def enter_words(category):
 
 
 def create_madlib(madlib):
-    new_madlib = current_template[3]
-    author_words = madlib.author_words_list.split(",")
-    name = current_author.first_name + " " + current_author.last_name
-    new_madlib = re.sub(r"\[Author\]", f"[green b]{name}[/green b]", new_madlib)
-    regex = r"\d+"
-    story = re.sub(
-        r"\[(0|1|10|11|[2-9])\]",
-        lambda x: f"[yellow b]{author_words[int(re.findall(regex, x.group())[0])].strip()}[/yellow b]",
-        new_madlib,
-    )
+    story = stringify_madlib(madlib, True)
     console.print("Here's your new MadLib!", style="cyan b")
     print()
     console.print(f"{current_template[2]}", style="green b underline")
@@ -142,10 +138,82 @@ def create_madlib(madlib):
     console.print(f"{story}", style="white")
     print()
     console.print(
-        f"Created by:{current_author.first_name + ' ' + current_author.last_name}",
+        f"Created by: {current_author.first_name + ' ' + current_author.last_name}",
         style="cyan",
     )
     new_game()
+
+
+# helper to stringify madlib
+def stringify_madlib(madlib, is_new=False):
+    new_madlib = (
+        current_template[3]
+        if is_new
+        else template.Template.get_template_by_id(madlib[3])[3]
+    )
+    author_words = (
+        madlib.author_words_list.split(",") if is_new else madlib[1].split(",")
+    )
+    name = (
+        current_author.first_name + " " + current_author.last_name
+        if is_new
+        else current_author[1] + " " + current_author[2]
+    )
+    new_madlib = re.sub(r"\[Author\]", f"[green b]{name}[/green b]", new_madlib)
+    regex = r"\d+"
+    story = re.sub(
+        r"\[(0|1|10|11|[2-9])\]",
+        lambda x: f"[yellow b]{author_words[int(re.findall(regex, x.group())[0])].strip()}[/yellow b]",
+        new_madlib,
+    )
+    return story
+
+
+# existing author
+def welcome_back(first_name, last_name):
+    global current_author
+    current_author = author.Author.get_author_by_name(first_name, last_name)
+    console.print(f"Welcome Back {first_name} {last_name}", style="green bold")
+    print()
+    console.print("What would you like to do?", style="cyan underline bold")
+    console.print(read_("./libs/txts/options.txt"), style="green b")
+    console.print("Please enter option number:", style="cyan underline bold")
+    option = input("> ").lower()
+    if option == "1":
+        rand = author.Author.get_random_madlib(current_author[0])
+        temp = template.Template.get_template_by_id(rand[3])
+        story = stringify_madlib(rand)
+        subprocess.call("clear")
+        console.print("Here's one of your MadLibs!", style="cyan b")
+        print()
+        console.print(f"{temp[2]}", style="green b underline")
+        print()
+        console.print(f"{story}", style="white")
+        print()
+        console.print(
+            "Enter '-new' to create another! Or '-exit' to leave.", style="cyan"
+        )
+        choice = input("> ").lower()
+        if choice == "-new":
+            subprocess.call("clear")
+            select_category()
+        elif choice == "-exit":
+            exit_program()
+    elif option == "2":
+        select_category()
+    elif option == "3":
+        author.Author.delete_author_by_id(current_author[0])
+        console.print("Your account has been deleted.", style="red")
+    elif option == "-exit":
+        exit_program()
+    elif option == "-help":
+        help_options()
+    else:
+        subprocess.call("clear")
+        console.print("Invalid option. Please enter a valid option number.")
+        time.sleep(2.5)
+        welcome_back(first_name, last_name)
+    #
 
 
 def new_game():
