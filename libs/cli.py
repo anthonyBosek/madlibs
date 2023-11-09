@@ -137,10 +137,13 @@ def create_madlib(madlib):
     print()
     console.print(f"{story}", style="white")
     print()
-    console.print(
-        f"Created by: {current_author.first_name + ' ' + current_author.last_name}",
-        style="cyan",
+    name = (
+        current_author.first_name + " " + current_author.last_name
+        if type(current_author) != tuple
+        else current_author[1] + " " + current_author[2]
     )
+    console.print(f"Created by: {name}", style="cyan")
+    print()
     new_game()
 
 
@@ -156,7 +159,7 @@ def stringify_madlib(madlib, is_new=False):
     )
     name = (
         current_author.first_name + " " + current_author.last_name
-        if is_new
+        if type(current_author) != tuple
         else current_author[1] + " " + current_author[2]
     )
     new_madlib = re.sub(r"\[Author\]", f"[green b]{name}[/green b]", new_madlib)
