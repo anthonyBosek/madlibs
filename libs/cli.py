@@ -11,7 +11,7 @@ current_template = None
 
 def welcome():
     subprocess.call("clear")
-    console.print(read_("./libs/txts/welcome.txt"), style="magenta b")
+    console.print(read_("./libs/txts/welcome.txt"), style="cyan b")
     choice = input("> ").lower()
     if choice == "-exit":
         exit_program()
@@ -194,15 +194,20 @@ def welcome_back(first_name, last_name):
         console.print(f"{story}", style="white")
         print()
         console.print(
-            "Enter '-new' to create another! Or '-exit' to leave.", style="cyan"
+            "Enter '-new' to create a new MadLib, '-back' to return to menu, or '-exit' to leave.",
+            style="cyan",
         )
         choice = input("> ").lower()
         if choice == "-new":
             subprocess.call("clear")
             select_category()
+        elif choice == "-back":
+            subprocess.call("clear")
+            welcome_back(first_name, last_name)
         elif choice == "-exit":
             exit_program()
     elif option == "2":
+        subprocess.call("clear")
         select_category()
     elif option == "3":
         author.Author.delete_author_by_id(current_author[0])
