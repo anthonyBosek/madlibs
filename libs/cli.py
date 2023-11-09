@@ -1,9 +1,8 @@
-import subprocess
-from models import *
-from rich import print
-from rich.console import Console
-import time
 import re
+import time
+import subprocess
+from rich.console import Console
+from models import *
 
 console = Console()
 current_author = None
@@ -53,7 +52,7 @@ def create_author():
         last_name = input("> ").strip()
 
     subprocess.call("clear")
-    console.print(f"Hello {first_name} {last_name}", style="cyan underline bold")
+    console.print(f"Hello {first_name} {last_name}", style="cyan bold")
     print()
     current_author = author.Author.create(first_name, last_name)
     select_category()
@@ -61,14 +60,18 @@ def create_author():
 
 def select_category():
     while True:
-        console.print(read_("./libs/txts/categories.txt"), style="yellow b")
+        console.print("MadLib Categories", style="cyan underline b")
         all_cats = template.Template.get_all_categorys()
         i = 1
         for cat in all_cats:
             console.print(f"{i}. {cat}", style="yellow")
             i += 1
+        print()
         console.print(template.Template.most_used_template(), style="blue bold")
-        console.print("Select a category by number:", style="cyan underline bold")
+        print()
+        console.print(
+            "Please select a category by number:", style="cyan underline bold"
+        )
         category = input("> ").strip()
         try:
             category_index = int(category)
@@ -125,15 +128,19 @@ def create_madlib(madlib):
     new_madlib = current_template[3]
     author_words = madlib.author_words_list.split(",")
     name = current_author.first_name + " " + current_author.last_name
-    new_madlib = re.sub(r"\[Author\]", f"[yellow b]{name}[/yellow b]", new_madlib)
+    new_madlib = re.sub(r"\[Author\]", f"[green b]{name}[/green b]", new_madlib)
+    regex = r"\d+"
     story = re.sub(
-        r"\[\d+\]",
-        lambda x: f"[yellow b]{author_words[int(x.group()[1])].strip()}[/yellow b]",
+        r"\[(0|1|10|11|[2-9])\]",
+        lambda x: f"[yellow b]{author_words[int(re.findall(regex, x.group())[0])].strip()}[/yellow b]",
         new_madlib,
     )
-    console.print("Here's your new MadLib!", style="yellow b")
+    console.print("Here's your new MadLib!", style="cyan b")
+    print()
     console.print(f"{current_template[2]}", style="green b underline")
+    print()
     console.print(f"{story}", style="white")
+    print()
     console.print(
         f"Created by:{current_author.first_name + ' ' + current_author.last_name}",
         style="cyan",
@@ -142,8 +149,8 @@ def create_madlib(madlib):
 
 
 def new_game():
-    console.print("Enter '-new' to play again!")
-    choice = input("").lower()
+    console.print("Enter '-new' to play again! Or '-exit' to exit.", style="cyan")
+    choice = input("> ").lower()
     if choice == "-new":
         subprocess.call("clear")
         select_category()

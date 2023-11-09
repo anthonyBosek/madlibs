@@ -319,4 +319,5 @@ class Template:
             LIMIT 1
         """
         row = CURSOR.execute(sql).fetchone()
-        return f"{row[1].title()} is the most used template with {row[2]} authors. It is available in the {row[0].title()} category."
+        return f"*{row[0].title()} has the most popular template - '{row[1].title()}'."
+        # return f"{row[1].title()} is the most used template with {row[2]} authors. It is available in the {row[0].title()} category."
